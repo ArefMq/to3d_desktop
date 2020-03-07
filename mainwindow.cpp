@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , tree_view_item_model(new QStandardItemModel())
-    , tree_d_viewer(0)
+    , viewer(0)
 {
     ui->setupUi(this);
     ui->treeView->setModel(tree_view_item_model);
@@ -32,9 +32,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->dockWidget_viewer->setGeometry(403, 0, 562, 438);
 
     check_button_access();
-    srand(time(NULL));
+    srand(time(nullptr));
 
-    tree_d_viewer = new Viewer(ui->tab_3d, "/home/parallels/Workspace/nab/ply/option-0001.ply");
+    viewer = new Viewer(ui->tab_3d);//, "/home/parallels/Workspace/nab/ply/option-0001.ply");
 }
 
 MainWindow::~MainWindow()
@@ -56,8 +56,8 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event) {
   if (event->type() == QEvent::Resize && obj == ui->dockWidget_viewer) {
       QResizeEvent *resizeEvent = static_cast<QResizeEvent*>(event);
       ui->tabview_viewer->setGeometry(1, 1, resizeEvent->size().width()-5, resizeEvent->size().height()-25);
-      if (tree_d_viewer)
-          tree_d_viewer->resize(ui->tabview_viewer->x(), ui->tabview_viewer->y(), ui->tabview_viewer->width(), ui->tabview_viewer->height());
+      if (viewer)
+          viewer->resize(ui->tabview_viewer->x(), ui->tabview_viewer->y(), ui->tabview_viewer->width(), ui->tabview_viewer->height());
   }
 
 //  cout << "main" << this->width() << ", " << this->height() << endl;
@@ -86,6 +86,8 @@ void MainWindow::on_actionNew_Project_triggered()
     ProjectHelper::create_new(tree_view_item_model);
     if (ProjectHelper::the_project && ProjectHelper::the_project->project_name != "")
         this->setWindowTitle("To3D :: " + ProjectHelper::the_project->project_name);
+
+    cout << ProjectHelper::the_project->project_url.toStdString() << endl;
     check_button_access();
 }
 
@@ -97,6 +99,9 @@ void MainWindow::check_button_access()
     ui->actionSave_As->setEnabled(project_enabled);
     ui->actionAdd_Images->setEnabled(project_enabled);
     ui->actionAdd_Video->setEnabled(project_enabled);
+    ui->actionExtract_Features->setEnabled(project_enabled);
+    ui->actionRecunstruct->setEnabled(project_enabled);
+    ui->actionReload_3D_Model->setEnabled(project_enabled);
 }
 
 void MainWindow::on_actionAdd_Images_triggered()
@@ -114,4 +119,29 @@ void MainWindow::on_actionAdd_Images_triggered()
 void MainWindow::on_treeView_clicked(const QModelIndex &index)
 {
 
+}
+
+void MainWindow::on_actionExtract_Features_triggered()
+{
+    if (ProjectHelper::the_project && ProjectHelper::the_project->run_feature_extractor())
+    {
+        // TODO: do enableing stuff here
+    }
+}
+
+void MainWindow::on_actionRecunstruct_triggered()
+{
+    if (ProjectHelper::the_project && ProjectHelper::the_project->run_3d_recunstruct())
+    {
+       on_actionReload_3D_Model_triggered();
+    }
+}
+
+void MainWindow::on_actionReload_3D_Model_triggered()
+{
+    if (ProjectHelper::the_project)
+    {
+        viewer->clear_model();
+        viewer->load_model(ProjectHelper::the_project->get_list_of_ply_files());
+    }
 }

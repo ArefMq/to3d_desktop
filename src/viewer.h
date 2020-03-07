@@ -15,7 +15,10 @@ class Viewer : public QWidget
   Q_OBJECT
 
 public:
-  Viewer(QWidget* parent, const QString& filePath);
+  Viewer(QWidget* parent);
+  void load_model(const QString& filePath);
+  void load_model(const QStringList& multipleFiles);
+  void clear_model();
   void resize(int x, int y, int w, int h);
 
 protected:

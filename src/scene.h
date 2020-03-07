@@ -20,9 +20,10 @@ class Scene : public QOpenGLWidget, protected QOpenGLFunctions
 public:
   enum colorAxisMode {COLOR_BY_ROW, COLOR_BY_Z};
 
-  Scene(const QString& plyFilePath, QWidget* parent = 0);
+  Scene(QWidget* parent = 0);
   ~Scene();
-
+  void load_model(const QString& filePath);
+  void clear_model();
 
 public slots:
   void setPointSize(size_t size);

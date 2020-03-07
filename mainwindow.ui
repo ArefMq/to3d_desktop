@@ -23,7 +23,7 @@
      <x>0</x>
      <y>0</y>
      <width>965</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -49,6 +49,10 @@
     <property name="title">
      <string>Model</string>
     </property>
+    <addaction name="actionExtract_Features"/>
+    <addaction name="actionRecunstruct"/>
+    <addaction name="separator"/>
+    <addaction name="actionReload_3D_Model"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -260,6 +264,21 @@
   <action name="actionWebsite">
    <property name="text">
     <string>Website</string>
+   </property>
+  </action>
+  <action name="actionExtract_Features">
+   <property name="text">
+    <string>Extract Features</string>
+   </property>
+  </action>
+  <action name="actionRecunstruct">
+   <property name="text">
+    <string>Recunstruct</string>
+   </property>
+  </action>
+  <action name="actionReload_3D_Model">
+   <property name="text">
+    <string>Reload 3D Model</string>
    </property>
   </action>
  </widget>

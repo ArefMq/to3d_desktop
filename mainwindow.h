@@ -29,10 +29,16 @@ private slots:
   void on_actionAdd_Images_triggered();
   void on_treeView_clicked(const QModelIndex &index);
 
+  void on_actionExtract_Features_triggered();
+
+  void on_actionRecunstruct_triggered();
+
+  void on_actionReload_3D_Model_triggered();
+
 private:
     Ui::MainWindow *ui;
     QStandardItemModel* tree_view_item_model;
-    Viewer* tree_d_viewer;
+    Viewer* viewer;
 
     void check_button_access();
 };

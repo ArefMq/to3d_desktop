@@ -33,7 +33,14 @@ void new_project_form::on_push_browse_clicked()
 {
     QString project_url = QFileDialog::getSaveFileName(this, "Project URL", ui->lineEdit_name->text());
     if (project_url != "")
+    {
+#ifdef WIN32
+        project_url = project_url.replace(QString("/"), QDir::separator());
+#else
+        project_url = project_url.replace(QString("\\"), QDir::separator());
+#endif
         ui->lineEdit_path->setText(project_url);
+    }
 }
 
 void new_project_form::on_push_rename_clicked()

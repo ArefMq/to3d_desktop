@@ -15,9 +15,10 @@
 #include "scene.h"
 #include "viewer.h"
 
+#include <iostream>
 #include <cassert>
 
-
+using namespace std;
 
 QSlider* createAnglecontrolSlider(QWidget* parent=0)
 {
@@ -29,7 +30,7 @@ QSlider* createAnglecontrolSlider(QWidget* parent=0)
 }
 
 
-Viewer::Viewer(QWidget* parent, const QString& filePath):
+Viewer::Viewer(QWidget* parent):
     QWidget(parent)
 {
   // accept keyboard input
@@ -39,7 +40,7 @@ Viewer::Viewer(QWidget* parent, const QString& filePath):
   //
   // make and connect scene widget
   //
-  _scene = new Scene(filePath, this);
+  _scene = new Scene(this);
   connect(_scene, &Scene::pickpointsChanged, this, &Viewer::_updateMeasureInfo);
 
   //
@@ -189,9 +190,27 @@ Viewer::Viewer(QWidget* parent, const QString& filePath):
   _scene->setPickpointEnabled(false);
 }
 
+void Viewer::load_model(const QString& filePath)
+{
+    _scene->load_model(filePath);
+}
+
+void Viewer::load_model(const QStringList& multipleFiles)
+{
+    foreach (QString file_path, multipleFiles)
+    {
+        _scene->load_model(file_path);
+    }
+}
+
+void Viewer::clear_model()
+{
+    _scene->clear_model();
+}
+
 void Viewer::resize(int x, int y, int w, int h)
 {
-    _scene->setGeometry(0, 0, 1000, 1000); //w, h);
+    _scene->setGeometry(0, 0, w, h);
 }
 
 
